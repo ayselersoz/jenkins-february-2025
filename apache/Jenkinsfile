@@ -6,6 +6,7 @@ metadata:
     run: kubernetes
   name: kubernetes
 spec:
+  serviceAccount: kubernetes
   containers:
   - image: kaizenacademy/mycommand: 1.0.0
     name: kubernetes
@@ -18,12 +19,7 @@ node ("kubernetes") {
         git branch: 'main', url: 'https://github.com/ayselersoz/jenkins-february-2025.git'
     }
     stage ("Test") {
-        sh '''
-        terraform version
-        kubectl version
-        helm version
-        kubectl get nodes
-        '''
+      sh "helm upgrade - "
     }
     }
 }}
