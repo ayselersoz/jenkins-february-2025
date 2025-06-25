@@ -3,22 +3,27 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    run: docker
-  name: docker
+    run: kubernetes
+  name: kubernetes
 spec:
   containers:
-  - command:
-    - sleep
-    - "3600"
-    image: docker
-    name: docker
+  - image: kaizenacademy/mycommand: 1.0.0
+    name: kubernetes
 '''
 
-podTemplate(cloud: 'kubernetes', label: 'docker', yaml: template) {
-node ("docker") {
-    container ("docker") {
+podTemplate(cloud: 'kubernetes', label: 'kubernetes', yaml: template) {
+node ("kubernetes") {
+    container ("kubernetes") {
     stage ("Checkout SCM") {
         git branch: 'main', url: 'https://github.com/ayselersoz/jenkins-february-2025.git'
     }
+    stage ("Test") {
+        sh '''
+        terraform version
+        kubectl version
+        helm version
+        kubectl get nodes
+        '''
     }
-}
+    }
+}}
